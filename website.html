@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Number Viewer</title>
+</head>
+<body>
+    <h1>Firebase Number Viewer</h1>
+    <div>
+        <p>Current number: <span id="current-number"></span></p>
+        <button onclick="changeNumber()">Change Number</button>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            databaseURL: "https://turing-poet-400901-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const ref = firebase.database().ref('number');
+
+        function getNumber() {
+            ref.on('value', function(snapshot) {
+                const currentNumber = snapshot.val();
+                document.getElementById('current-number').innerText = currentNumber;
+            });
+        }
+
+        function setNumber(newNumber) {
+            ref.set(newNumber);
+        }
+
+        function changeNumber() {
+            const newNumber = prompt("Enter the new number:");
+            if (newNumber !== null) {
+                setNumber(newNumber);
+            }
+        }
+
+        // Initial retrieval of the number
+        getNumber();
+    </script>
+</body>
+</html>
